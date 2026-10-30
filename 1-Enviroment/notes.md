@@ -3,9 +3,8 @@
 ### Project Initialization
 
 ```bash
-uv init --bare
+uv init --bare          # Create a minimal pyproject.toml
 ```
-Creates a minimal `pyproject.toml`.
 
 ### Dependency Management
 
@@ -29,7 +28,21 @@ uv lock --upgrade       # Upgrade all compatible dependencies
 uv run ruff check .        # Check code quality
 uv run ruff check . --fix  # Auto-fix lint issues
 uv run ruff format .       # Format code
+uv run ruff format --check . 
 ```
+
+### pytest — Testing
+
+```bash
+uv run pytest              # Run all tests
+uv run pytest -v           # Run tests with detailed output
+```
+
+- `assert` — Verify that a condition is true.
+- `@pytest.mark.parametrize` — Run one test with multiple sets of inputs.
+- `@pytest.fixture` — Prepare and inject reusable test data or resources.
+- `test_` — Prefix for automatic test function discovery.
+- `conftest.py` — Share fixtures across multiple test files.
 
 ### Git — Branch, Commit & Push
 

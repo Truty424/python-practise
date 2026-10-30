@@ -3,6 +3,9 @@ name = "python-practise"
 version = "0.1.0"
 requires-python = ">=3.15"
 dependencies = [
-    "requests>=2.34.2",
+    "pytest>=9.2.0",
     "ruff>=0.17.3",
 ]
+[tool.pytest.ini_options]
+testpaths = ["1-Enviroment/tests"]
+pythonpath = ["1-Enviroment/src"]
