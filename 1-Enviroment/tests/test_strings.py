@@ -3,7 +3,7 @@ from strings import caesar_cipher, count_words, is_palindrome
 
 
 @pytest.fixture
-def sample_text():
+def sample_text() -> str:
     return "Hello World"
 
 
@@ -43,9 +43,9 @@ def test_count_words(text: str, expected: int):
         ("abc", -3, "xyz"),
     ],
 )
-def test_caesar_cipher(text: str, shift: int, expected: int):
+def test_caesar_cipher(text: str, shift: int, expected: str):
     assert caesar_cipher(text, shift) == expected
 
 
-def test_count_words_with_fixture(sample_text):
+def test_count_words_with_fixture(sample_text: str):
     assert count_words(sample_text) == 2
