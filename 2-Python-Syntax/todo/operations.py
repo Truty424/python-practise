@@ -18,14 +18,14 @@ def remove_task(tasks: list[Task], task_id: int) -> None:
             tasks.remove(task)
             return
 
-    raise TaskNotFoundError(f"Task with ID {task_id} not found")
+    raise TaskNotFoundError(f"Task with ID #{task_id} not found")
 
-def mark_as_done(tasks: list[Task], task_id: int) -> None:
+def mark_as_done(tasks: list[Task], task_id: int) -> Task:
     for task in tasks:
         if task["id"] == task_id:
             if not task["done"]:
                 task["done"] = True
-                return
+                return task
             else:
-                raise TaskAlreadyDoneError(f"Task with ID {task_id} already done")
-    raise TaskNotFoundError(f"Task with ID {task_id} not found")
+                raise TaskAlreadyDoneError(f"Task with ID #{task_id} already done")
+    raise TaskNotFoundError(f"Task with ID #{task_id} not found")

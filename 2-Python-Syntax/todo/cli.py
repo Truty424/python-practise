@@ -3,7 +3,7 @@ from pathlib import Path
 
 from .operations import add_tasks, mark_as_done, remove_task
 from .storage import load_tasks, save_tasks
-
+from .exceptions import TaskNotFoundError, TaskAlreadyDoneError
 
 TASKS_FILE = Path("tasks.json")
 
@@ -46,12 +46,22 @@ def main() -> None:
 
     elif args.command == "done":
         tasks = load_tasks(TASKS_FILE)
-        done_task = mark_as_done(tasks, args.id)
-        save_tasks(TASKS_FILE, tasks)
-        print(f"Done: {done_task['title']}")
+        try:
+            done_task = mark_as_done(tasks, args.id)
+        except (TaskNotFoundError, TaskAlreadyDoneError) as error:
+            print(f"Error: {error}")
+            return
+        else:
+            save_tasks(TASKS_FILE, tasks)
+            print(f"Done: {done_task['title']}")
+
 
     elif args.command == "remove":
         tasks = load_tasks(TASKS_FILE)
-        remove_task(tasks, args.id)
+        try:
+            remove_task(tasks, args.id)
+        except TaskNotFoundError as error:
+            print(f"Error: {error}")
+            return
         save_tasks(TASKS_FILE, tasks)
         print(f"Removed task #{args.id}")
