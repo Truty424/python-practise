@@ -12,6 +12,7 @@ def add_tasks(tasks: list[Task], title: str) -> Task:
     tasks.append(new_task)
     return new_task
 
+
 def remove_task(tasks: list[Task], task_id: int) -> None:
     for task in tasks:
         if task["id"] == task_id:
@@ -19,6 +20,7 @@ def remove_task(tasks: list[Task], task_id: int) -> None:
             return
 
     raise TaskNotFoundError(f"Task with ID #{task_id} not found")
+
 
 def mark_as_done(tasks: list[Task], task_id: int) -> Task:
     for task in tasks:

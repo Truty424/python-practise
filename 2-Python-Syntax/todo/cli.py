@@ -60,7 +60,6 @@ def main() -> None:
             save_tasks(TASKS_FILE, tasks)
             print(f"Done: {done_task['title']}")
 
-
     elif args.command == "remove":
         tasks = load_tasks(TASKS_FILE)
         try:
