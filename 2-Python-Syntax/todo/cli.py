@@ -1,9 +1,9 @@
 import argparse
 from pathlib import Path
 
+from .exceptions import TaskAlreadyDoneError, TaskNotFoundError
 from .operations import add_tasks, mark_as_done, remove_task
 from .storage import load_tasks, save_tasks
-from .exceptions import TaskNotFoundError, TaskAlreadyDoneError
 
 TASKS_FILE = Path("tasks.json")
 
@@ -27,9 +27,14 @@ def main() -> None:
     args = parser.parse_args()
     if args.command == "add":
         tasks = load_tasks(TASKS_FILE)
-        new_task = add_tasks(tasks, args.title)
-        save_tasks(TASKS_FILE, tasks)
-        print(f"Added task #{new_task['id']}: {new_task['title']}")
+        try:
+            new_task = add_tasks(tasks, args.title)
+        except ValueError as error:
+            print(f"Error: {error}")
+            return
+        else:
+            save_tasks(TASKS_FILE, tasks)
+            print(f"Added task #{new_task['id']}: {new_task['title']}")
 
     elif args.command == "list":
         tasks = load_tasks(TASKS_FILE)
