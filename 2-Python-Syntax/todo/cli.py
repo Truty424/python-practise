@@ -1,7 +1,7 @@
 import argparse
 from pathlib import Path
 
-from .exceptions import TaskAlreadyDoneError, TaskNotFoundError
+from .exceptions import InvalidTaskError, TaskAlreadyDoneError, TaskNotFoundError
 from .operations import add_tasks, mark_as_done, remove_task
 from .storage import load_tasks, save_tasks
 
@@ -29,7 +29,7 @@ def main() -> None:
         tasks = load_tasks(TASKS_FILE)
         try:
             new_task = add_tasks(tasks, args.title)
-        except ValueError as error:
+        except InvalidTaskError as error:
             print(f"Error: {error}")
             return
         else:

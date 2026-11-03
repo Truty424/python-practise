@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from todo.exceptions import TaskAlreadyDoneError, TaskNotFoundError
+from todo.exceptions import InvalidTaskError, TaskAlreadyDoneError, TaskNotFoundError
 from todo.operations import add_tasks, mark_as_done, remove_task
 from todo.storage import load_tasks, save_tasks
 from todo.tasks import Task, create_task
@@ -101,3 +101,17 @@ def test_load_tasks_returns_empty_list_when_file_does_not_exist(tmp_path: Path) 
     loaded_tasks = load_tasks(file_path)
 
     assert loaded_tasks == []
+
+
+@pytest.mark.parametrize(
+    ("task_id", "title"),
+    [
+        (0, "Learn Python"),
+        (-1, "Learn Python"),
+        (1, ""),
+        (1, "   "),
+    ],
+)
+def test_create_invalid_task(task_id: int, title: str) -> None:
+    with pytest.raises(InvalidTaskError):
+        create_task(task_id, title)
