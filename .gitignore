@@ -1,3 +1,6 @@
 .idea/
 .venv/
 __pycache__/
+
+# TODO application data
+2-Python-Syntax/tasks.json
