@@ -25,8 +25,9 @@ def main() -> None:
     remove_parser.add_argument("id", type=int, help="Task ID")
 
     args = parser.parse_args()
+    tasks = load_tasks(TASKS_FILE)
+
     if args.command == "add":
-        tasks = load_tasks(TASKS_FILE)
         try:
             new_task = add_tasks(tasks, args.title)
         except TodoError as error:
@@ -36,8 +37,6 @@ def main() -> None:
         print(f"Added task #{new_task['id']}: {new_task['title']}")
 
     elif args.command == "list":
-        tasks = load_tasks(TASKS_FILE)
-
         if tasks:
             print(f"{'ID':<4} | {'TITLE':<25} | DONE")
             print("-" * 40)
@@ -49,7 +48,6 @@ def main() -> None:
             print("No tasks found")
 
     elif args.command == "done":
-        tasks = load_tasks(TASKS_FILE)
         try:
             done_task = mark_as_done(tasks, args.id)
         except TodoError as error:
@@ -59,7 +57,6 @@ def main() -> None:
         print(f"Done: {done_task['title']}")
 
     elif args.command == "remove":
-        tasks = load_tasks(TASKS_FILE)
         try:
             remove_task(tasks, args.id)
         except TodoError as error:
