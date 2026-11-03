@@ -33,3 +33,6 @@ jobs:
 
       - name: Run Ruff formatting
         run: uv run --no-sync ruff format --check .
+
+      - name: Check types with mypy
+        run: uv run --no-sync mypy

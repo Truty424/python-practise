@@ -27,3 +27,10 @@ dev = [
 
 [tool.ruff]
 extend-exclude = ["*.md"]
+
+[tool.mypy]
+files = [
+    "1-Enviroment/src",
+    "2-Python-Syntax/todo",
+]
+strict = true
