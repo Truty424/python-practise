@@ -1,10 +1,14 @@
-class TaskNotFoundError(Exception):
+class TodoError(Exception):
     pass
 
 
-class TaskAlreadyDoneError(Exception):
+class TaskNotFoundError(TodoError):
     pass
 
 
-class InvalidTaskError(Exception):
+class TaskAlreadyDoneError(TodoError):
+    pass
+
+
+class InvalidTaskError(TodoError):
     pass
