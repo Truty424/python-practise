@@ -32,9 +32,8 @@ def main() -> None:
         except TodoError as error:
             print(f"Error: {error}")
             return
-        else:
-            save_tasks(TASKS_FILE, tasks)
-            print(f"Added task #{new_task['id']}: {new_task['title']}")
+        save_tasks(TASKS_FILE, tasks)
+        print(f"Added task #{new_task['id']}: {new_task['title']}")
 
     elif args.command == "list":
         tasks = load_tasks(TASKS_FILE)
@@ -56,9 +55,8 @@ def main() -> None:
         except TodoError as error:
             print(f"Error: {error}")
             return
-        else:
-            save_tasks(TASKS_FILE, tasks)
-            print(f"Done: {done_task['title']}")
+        save_tasks(TASKS_FILE, tasks)
+        print(f"Done: {done_task['title']}")
 
     elif args.command == "remove":
         tasks = load_tasks(TASKS_FILE)
