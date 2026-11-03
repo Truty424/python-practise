@@ -2,7 +2,12 @@ from pathlib import Path
 
 import pytest
 
-from todo.exceptions import InvalidTaskError, TaskAlreadyDoneError, TaskNotFoundError, TodoError
+from todo.exceptions import (
+    InvalidTaskError,
+    TaskAlreadyDoneError,
+    TaskNotFoundError,
+    TodoError,
+)
 from todo.operations import add_tasks, mark_as_done, remove_task
 from todo.storage import load_tasks, save_tasks
 from todo.tasks import Task, create_task
@@ -115,6 +120,7 @@ def test_load_tasks_returns_empty_list_when_file_does_not_exist(tmp_path: Path) 
 def test_create_invalid_task(task_id: int, title: str) -> None:
     with pytest.raises(InvalidTaskError):
         create_task(task_id, title)
+
 
 def test_todo_exception_hierarchy() -> None:
     assert issubclass(TaskNotFoundError, TodoError)
