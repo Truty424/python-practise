@@ -29,5 +29,13 @@ def generate_log_file(output_path: Path, count: int) -> None:
         f.writelines(generate_log_line() + "\n" for _ in range(count))
 
 
-if __name__ == "__main__":
-    generate_log_file(BASE_DIR / "data" / "access.log", 100)
+def generate_large_log_file(output_path: Path, size_mb: int) -> None:
+    target_size = size_mb * 1024 * 1024
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(output_path, "wb") as f:
+        while f.tell() < target_size:
+            line = generate_log_line() + "\n"
+            binary_line = line.encode("utf-8")
+            f.write(binary_line)
