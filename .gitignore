@@ -2,5 +2,9 @@
 .venv/
 __pycache__/
 
-# TODO application data
+# Chapter 2 todo application data
 2-Python-Syntax/tasks.json
+
+# Chapter 3 generated data
+3-Files-Formats/data/*
+!3-Files-Formats/data/.gitkeep
