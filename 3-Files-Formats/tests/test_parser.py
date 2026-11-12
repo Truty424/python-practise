@@ -1,4 +1,5 @@
 import pytest
+
 from log_parser.parser import parse_log_line
 
 

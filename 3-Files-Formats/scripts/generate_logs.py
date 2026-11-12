@@ -1,5 +1,5 @@
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -17,7 +17,11 @@ def generate_log_line() -> str:
     status = random.choice(statuses)
     size = random.randint(100, 5000)
 
-    timestamp = datetime.now().astimezone().strftime("%d/%b/%Y:%H:%M:%S %z")
+    now = datetime.now().astimezone()
+    random_seconds = random.randint(0, 12 * 60 * 60)
+    timestamp = (now - timedelta(seconds=random_seconds)).strftime(
+        "%d/%b/%Y:%H:%M:%S %z"
+    )
 
     return f'{ip} - - [{timestamp}] "{method} {path} HTTP/1.1" {status} {size}'
 
