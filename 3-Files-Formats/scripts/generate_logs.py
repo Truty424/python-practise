@@ -39,3 +39,19 @@ def generate_large_log_file(output_path: Path, size_mb: int) -> None:
             line = generate_log_line() + "\n"
             binary_line = line.encode("utf-8")
             f.write(binary_line)
+
+
+def main() -> None:
+    generate_log_file(
+        BASE_DIR / "data" / "access.log",
+        100,
+    )
+
+    generate_large_log_file(
+        BASE_DIR / "data" / "large_access.log",
+        1,
+    )
+
+
+if __name__ == "__main__":
+    main()
