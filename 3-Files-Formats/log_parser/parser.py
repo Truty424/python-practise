@@ -20,6 +20,18 @@ class LogEntry(TypedDict):
     size: int
 
 
+class HourlyTraffic(TypedDict):
+    requests: int
+    bytes: int
+
+
+class LogStatistics(TypedDict):
+    total_requests: int
+    status_codes: dict[int, int]
+    top_ips: list[tuple[str, int]]
+    traffic_per_hour: dict[str, HourlyTraffic]
+
+
 def parse_log_line(line: str) -> LogEntry:
     match = re.fullmatch(LOG_PATTERN, line.strip())
 

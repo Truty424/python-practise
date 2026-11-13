@@ -1,58 +1,68 @@
 from collections import Counter
 from datetime import datetime
-from typing import Literal
+from pathlib import Path
+from typing import TypedDict
 
-from .parser import LogEntry
-
-
-def count_by_field(
-    logs: list[LogEntry], field: Literal["status", "ip"]
-) -> Counter[int | str]:
-    counter: Counter[int | str] = Counter()
-
-    for log in logs:
-        counter[log[field]] += 1
-
-    return counter
+from .parser import LogEntry, parse_log_line
 
 
-def traffic_per_hour(logs: list[LogEntry]) -> dict[str, dict[str, int]]:
-    traffic: dict[str, dict[str, int]] = {}
-
-    for log in logs:
-        dt = datetime.strptime(
-            log["timestamp"],
-            "%d/%b/%Y:%H:%M:%S %z",
-        )
-
-        hour = dt.strftime("%Y-%m-%d %H:00 %z")
-
-        if hour not in traffic:
-            traffic[hour] = {
-                "requests": 0,
-                "bytes": 0,
-            }
-
-        traffic[hour]["requests"] += 1
-        traffic[hour]["bytes"] += log["size"]
-
-    return traffic
+class HourlyTraffic(TypedDict):
+    requests: int
+    bytes: int
 
 
-if __name__ == "__main__":
-    from pathlib import Path
+class LogStatistics(TypedDict):
+    total_requests: int
+    status_codes: dict[int, int]
+    top_ips: list[tuple[str, int]]
+    traffic_per_hour: dict[str, HourlyTraffic]
 
-    from .parser import parse_log_line
 
-    file_path = Path("data/access.log")
+def update_statistics(
+    log: LogEntry,
+    status_counter: Counter[int],
+    ip_counter: Counter[str],
+    traffic: dict[str, HourlyTraffic],
+) -> None:
+    status_counter[log["status"]] += 1
+    ip_counter[log["ip"]] += 1
+
+    dt = datetime.strptime(
+        log["timestamp"],
+        "%d/%b/%Y:%H:%M:%S %z",
+    )
+
+    hour = dt.strftime("%Y-%m-%d %H:00 %z")
+
+    if hour not in traffic:
+        traffic[hour] = {
+            "requests": 0,
+            "bytes": 0,
+        }
+
+    traffic[hour]["requests"] += 1
+    traffic[hour]["bytes"] += log["size"]
+
+
+def analyze_logs(file_path: Path) -> LogStatistics:
+    status_counter: Counter[int] = Counter()
+    ip_counter: Counter[str] = Counter()
+    traffic: dict[str, HourlyTraffic] = {}
 
     with open(file_path, "r", encoding="utf-8") as f:
-        logs = [parse_log_line(line) for line in f]
+        for line in f:
+            log = parse_log_line(line)
 
-    print(count_by_field(logs, "status"))
-    print(count_by_field(logs, "ip"))
+            update_statistics(
+                log,
+                status_counter,
+                ip_counter,
+                traffic,
+            )
 
-    traffic = traffic_per_hour(logs)
-
-    for hour, stats in sorted(traffic.items()):
-        print(f"{hour}: {stats['requests']} requests, {stats['bytes']} bytes")
+    return {
+        "total_requests": sum(status_counter.values()),
+        "status_codes": dict(status_counter),
+        "top_ips": ip_counter.most_common(10),
+        "traffic_per_hour": dict(sorted(traffic.items())),
+    }
