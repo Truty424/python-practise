@@ -2,20 +2,24 @@
 name = "python-practise"
 version = "0.1.0"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "tomli-w>=1.2.0",
+]
 
 [tool.pytest.ini_options]
 testpaths = [
     "1-Enviroment/tests",
     "2-Python-Syntax/tests",
+    "3-Files-Formats/tests",
 ]
 pythonpath = [
     "1-Enviroment/src",
     "2-Python-Syntax",
+    "3-Files-Formats",
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["todo"]
+known-first-party = ["todo", "log_parser"]
 
 [dependency-groups]
 dev = [
@@ -32,5 +36,6 @@ extend-exclude = ["*.md"]
 files = [
     "1-Enviroment/src",
     "2-Python-Syntax/todo",
+    "3-Files-Formats/log_parser",
 ]
 strict = true
